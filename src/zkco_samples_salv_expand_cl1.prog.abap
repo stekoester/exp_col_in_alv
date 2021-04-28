@@ -1,21 +1,25 @@
 CLASS lcl_handle_events DEFINITION.
   PUBLIC SECTION.
-    CONSTANTS:
+    CLASS-DATA:
       BEGIN OF gcs_toolbar,
         expall_name     TYPE salv_de_function VALUE 'EXPALL',
         expall_icon     TYPE iconname VALUE icon_expand_all,
         colall_name     TYPE salv_de_function VALUE 'COLALL',
         colall_icon     TYPE iconname VALUE icon_collapse_all,
-        expall_tooltip  TYPE string VALUE 'Expand all Details',
-        colall_tooltip  TYPE string VALUE 'Collapse all Details',
+        expall_tooltip  TYPE string,
+        colall_tooltip  TYPE string,
         expall_position TYPE salv_de_function_pos VALUE if_salv_c_function_position=>right_of_salv_functions,
         colall_position TYPE salv_de_function_pos VALUE if_salv_c_function_position=>right_of_salv_functions,
       END OF gcs_toolbar.
-    CLASS-METHODS get_icon
-      IMPORTING
-        iv_type        TYPE char1
-      RETURNING
-        VALUE(rv_icon) TYPE text50.
+
+    CLASS-METHODS:
+      class_constructor,
+
+      get_icon
+        IMPORTING
+          iv_type        TYPE char1
+        RETURNING
+          VALUE(rv_icon) TYPE text40.
 
     METHODS:
       handle_added_function FOR EVENT added_function OF cl_salv_events_table
@@ -30,6 +34,12 @@ CLASS lcl_handle_events DEFINITION.
 ENDCLASS.
 
 CLASS lcl_handle_events IMPLEMENTATION.
+
+  METHOD class_constructor.
+    gcs_toolbar = VALUE #( BASE gcs_toolbar
+                           expall_tooltip = 'Expand all Details'(e01)
+                           colall_tooltip = 'Collapse all Details'(c01) ).
+  ENDMETHOD.
 
 
   METHOD handle_added_function.
@@ -80,15 +90,15 @@ CLASS lcl_handle_events IMPLEMENTATION.
       EXPORTING
         name                  = SWITCH #( iv_type WHEN 'E' THEN icon_expand
                                                   WHEN 'C' THEN icon_collapse )
-        info                  = SWITCH #( iv_type WHEN 'E' THEN |Expand Details|
-                                                  WHEN 'C' THEN |Collapse Details| )
+        info                  = SWITCH text40( iv_type WHEN 'E' THEN 'Expand Details'(e02)
+                                                       WHEN 'C' THEN 'Collapse Details'(c02) )
         add_stdinf            = ' '
       IMPORTING
         result                = rv_icon
       EXCEPTIONS
-        icon_not_found        = 1
-        outputfield_too_short = 2
-        OTHERS                = 3.
+        icon_not_found        = 0
+        outputfield_too_short = 0
+        OTHERS                = 0.
   ENDMETHOD.
 
   METHOD handle_link_click.

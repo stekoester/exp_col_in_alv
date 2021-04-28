@@ -5,7 +5,7 @@ FORM data_get.
       EXIT.
     ENDIF.
     SELECT pgmid, object, obj_name, korrnum, srcsystem, author, srcdep, devclass
-      FROM tadir APPENDING TABLE @gt_tadir
+      FROM tadir APPENDING TABLE @gt_tadir                                        "#EC CI_GENBUFF
       UP TO 5 ROWS
       WHERE pgmid    EQ 'R3TR'
         AND object   EQ @<lv_object>
