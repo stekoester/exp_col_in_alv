@@ -12,9 +12,9 @@ FORM data_get.
         AND devclass EQ 'SCTS_CAT'.
     IF sy-subrc EQ 0.
       DATA(ls_tadir) = gt_tadir[ lines( gt_tadir ) ].
-      APPEND VALUE #( pgmid = ls_tadir-pgmid
-                      object = ls_tadir-object
-                      expand = lcl_handle_events=>get_icon( iv_type = 'E' )
+      APPEND VALUE #( pgmid     = ls_tadir-pgmid
+                      object    = ls_tadir-object
+                      expand    = lcl_handle_events=>get_icon( iv_type = 'E' )
                       cell_type = VALUE #( ( fieldname = 'EXPAND'
                                              style     = cl_gui_alv_grid=>mc_style_hotspot ) ) ) TO gt_tadir_output.
     ENDIF.
