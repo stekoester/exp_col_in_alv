@@ -17,7 +17,7 @@
       <PROGRAM>ZKCO_SAMPLES_SALV_EXPAND</PROGRAM>
       <SCREEN>0100</SCREEN>
       <LANGUAGE>E</LANGUAGE>
-      <DESCRIPT>ALV</DESCRIPT>
+      <DESCRIPT>SALV</DESCRIPT>
       <TYPE>N</TYPE>
       <NEXTSCREEN>0100</NEXTSCREEN>
       <LINES>200</LINES>
@@ -88,7 +88,7 @@
       <ACTCODE>000001</ACTCODE>
       <PFKCODE>000001</PFKCODE>
       <BUTCODE>0001</BUTCODE>
-      <INT_NOTE>ALV</INT_NOTE>
+      <INT_NOTE>SALV</INT_NOTE>
      </RSMPE_STAT>
     </STA>
     <FUN>
@@ -152,34 +152,34 @@
       <OBJ_TYPE>A</OBJ_TYPE>
       <OBJ_CODE>000001</OBJ_CODE>
       <MODAL>D</MODAL>
-      <INT_NOTE>Expand/Collapse rows in ALV</INT_NOTE>
+      <INT_NOTE>Expand/Collapse rows in SALV</INT_NOTE>
      </RSMPE_ATRT>
      <RSMPE_ATRT>
       <OBJ_TYPE>P</OBJ_TYPE>
       <OBJ_CODE>000001</OBJ_CODE>
       <MODAL>D</MODAL>
-      <INT_NOTE>Expand/Collapse rows in ALV</INT_NOTE>
+      <INT_NOTE>Expand/Collapse rows in SALV</INT_NOTE>
      </RSMPE_ATRT>
      <RSMPE_ATRT>
       <OBJ_TYPE>B</OBJ_TYPE>
       <OBJ_CODE>000001</OBJ_CODE>
       <SUB_CODE>0001</SUB_CODE>
       <MODAL>D</MODAL>
-      <INT_NOTE>Expand/Collapse rows in ALV</INT_NOTE>
+      <INT_NOTE>Expand/Collapse rows in SALV</INT_NOTE>
      </RSMPE_ATRT>
     </DOC>
     <TIT>
      <RSMPE_TITT>
       <CODE>0100</CODE>
-      <TEXT>Expand/Collapse rows in ALV</TEXT>
+      <TEXT>Expand/Collapse rows in SALV</TEXT>
      </RSMPE_TITT>
     </TIT>
    </CUA>
    <TPOOL>
     <item>
      <ID>R</ID>
-     <ENTRY>Expand/Collapse rows in ALV</ENTRY>
-     <LENGTH>27</LENGTH>
+     <ENTRY>Expand/Collapse rows in SALV</ENTRY>
+     <LENGTH>28</LENGTH>
     </item>
     <item>
      <ID>I</ID>

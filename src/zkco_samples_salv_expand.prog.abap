@@ -1,7 +1,5 @@
 *&---------------------------------------------------------------------*
-*& Report zkco_samples_salv_expand
-*&---------------------------------------------------------------------*
-*& This report demonstrates how to add a button in ALV to
+*& This report demonstrates how to add a button in SALV to
 *& expand/collapse rows to increase the result with more details per
 *& line.
 *&---------------------------------------------------------------------*

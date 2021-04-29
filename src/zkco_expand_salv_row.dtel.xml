@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<abapGit version="v1.0.0" serializer="LCL_OBJECT_DTEL" serializer_version="v1.0.0">
+ <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+  <asx:values>
+   <DD04V>
+    <ROLLNAME>ZKCO_EXPAND_SALV_ROW</ROLLNAME>
+    <DDLANGUAGE>E</DDLANGUAGE>
+    <DOMNAME>TEXT40</DOMNAME>
+    <HEADLEN>55</HEADLEN>
+    <SCRLEN1>10</SCRLEN1>
+    <SCRLEN2>20</SCRLEN2>
+    <SCRLEN3>40</SCRLEN3>
+    <DDTEXT>Expand/Collapse ALV row</DDTEXT>
+    <REPTEXT>Expand/Collapse ALV row</REPTEXT>
+    <SCRTEXT_S>Exp/ColRow</SCRTEXT_S>
+    <SCRTEXT_M>Exp/Col ALV row</SCRTEXT_M>
+    <SCRTEXT_L>Expand/Collapse ALV row</SCRTEXT_L>
+    <DTELMASTER>E</DTELMASTER>
+    <REFKIND>D</REFKIND>
+   </DD04V>
+   <I18N_LANGS>
+    <LANGU>D</LANGU>
+   </I18N_LANGS>
+   <DD04_TEXTS>
+    <item>
+     <DDLANGUAGE>D</DDLANGUAGE>
+     <DDTEXT>Zeile auf- und zuklappen</DDTEXT>
+     <REPTEXT>Zeile auf- und zuklappen</REPTEXT>
+     <SCRTEXT_S>ZeilAuf/Zu</SCRTEXT_S>
+     <SCRTEXT_M>Zeile auf/zuklappen</SCRTEXT_M>
+     <SCRTEXT_L>Zeile auf- und zuklappen</SCRTEXT_L>
+    </item>
+   </DD04_TEXTS>
+  </asx:values>
+ </asx:abap>
+</abapGit>
