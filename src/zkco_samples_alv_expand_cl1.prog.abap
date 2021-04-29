@@ -55,10 +55,10 @@ CLASS lcl_handle_events IMPLEMENTATION.
               WHERE expand(3) EQ icon_expand(3).
           DATA(lv_tabix) = sy-tabix.
           <ls_tadir_output>-expand = lcl_handle_events=>get_icon( iv_type = 'C' ).
-          DATA(lt_tadir) = VALUE zkco_samples_salv_tadir_t( FOR ls_tadir IN gt_tadir
-                                                            WHERE ( pgmid  EQ <ls_tadir_output>-pgmid AND
-                                                                    object EQ <ls_tadir_output>-object )
-                                                            ( ls_tadir ) ).
+          DATA(lt_tadir) = VALUE zkco_samples_alv_tadir_t( FOR ls_tadir IN gt_tadir
+                                                           WHERE ( pgmid  EQ <ls_tadir_output>-pgmid AND
+                                                                   object EQ <ls_tadir_output>-object )
+                                                           ( ls_tadir ) ).
           LOOP AT lt_tadir REFERENCE INTO DATA(lr_tadir).
             INSERT CORRESPONDING #( lr_tadir->* EXCEPT expand ) INTO gt_tadir_output
                    INDEX lv_tabix + sy-tabix.
@@ -123,10 +123,10 @@ CLASS lcl_handle_events IMPLEMENTATION.
         ASSIGN gt_tadir_output[ e_row_id-index ] TO FIELD-SYMBOL(<ls_tadir_output>).
         IF <ls_tadir_output>-expand(3) EQ icon_expand(3).
           <ls_tadir_output>-expand = lcl_handle_events=>get_icon( iv_type = 'C' ).
-          DATA(lt_tadir) = VALUE zkco_samples_salv_tadir_t( FOR ls_tadir IN gt_tadir
-                                                            WHERE ( pgmid  EQ <ls_tadir_output>-pgmid AND
-                                                                    object EQ <ls_tadir_output>-object )
-                                                            ( ls_tadir ) ).
+          DATA(lt_tadir) = VALUE zkco_samples_alv_tadir_t( FOR ls_tadir IN gt_tadir
+                                                           WHERE ( pgmid  EQ <ls_tadir_output>-pgmid AND
+                                                                   object EQ <ls_tadir_output>-object )
+                                                           ( ls_tadir ) ).
           LOOP AT lt_tadir REFERENCE INTO DATA(lr_tadir).
             INSERT CORRESPONDING #( lr_tadir->* EXCEPT expand ) INTO gt_tadir_output
                    INDEX e_row_id-index + sy-tabix.
