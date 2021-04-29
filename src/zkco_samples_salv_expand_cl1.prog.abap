@@ -36,9 +36,8 @@ ENDCLASS.
 CLASS lcl_handle_events IMPLEMENTATION.
 
   METHOD class_constructor.
-    gcs_toolbar = VALUE #( BASE gcs_toolbar
-                           expall_tooltip = 'Expand all Details'(e01)
-                           colall_tooltip = 'Collapse all Details'(c01) ).
+    gcs_toolbar-expall_tooltip = 'Expand all Details'(e01).
+    gcs_toolbar-colall_tooltip = 'Collapse all Details'(c01).
   ENDMETHOD.
 
 

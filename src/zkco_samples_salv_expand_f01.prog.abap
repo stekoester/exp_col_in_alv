@@ -4,11 +4,11 @@ FORM data_get.
     IF sy-subrc NE 0.
       EXIT.
     ENDIF.
-    SELECT pgmid, object, obj_name, korrnum, srcsystem, author, srcdep, devclass
-      FROM tadir APPENDING TABLE @gt_tadir                                        "#EC CI_GENBUFF
+    SELECT pgmid object obj_name korrnum srcsystem author srcdep devclass
+      FROM tadir APPENDING TABLE gt_tadir                                        "#EC CI_GENBUFF
       UP TO 5 ROWS
       WHERE pgmid    EQ 'R3TR'
-        AND object   EQ @<lv_object>
+        AND object   EQ <lv_object>
         AND devclass EQ 'SCTS_CAT'.
     IF sy-subrc EQ 0.
       DATA(ls_tadir) = gt_tadir[ lines( gt_tadir ) ].
