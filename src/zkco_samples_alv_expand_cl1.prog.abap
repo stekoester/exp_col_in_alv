@@ -22,12 +22,11 @@ CLASS lcl_handle_events DEFINITION.
           VALUE(rv_icon) TYPE text40.
 
     METHODS:
-*      handle_added_function FOR EVENT added_function OF cl_salv_events_table
       handle_user_command   FOR EVENT user_command  OF cl_gui_alv_grid
         IMPORTING
           e_ucomm
           sender,
-      handle_added_function FOR EVENT toolbar       OF cl_gui_alv_grid
+      handle_toolbar FOR EVENT toolbar       OF cl_gui_alv_grid
         IMPORTING
           e_object
           e_interactive
@@ -56,7 +55,7 @@ CLASS lcl_handle_events IMPLEMENTATION.
               WHERE expand(3) EQ icon_expand(3).
           DATA(lv_tabix) = sy-tabix.
           <ls_tadir_output>-expand = lcl_handle_events=>get_icon( iv_type = 'C' ).
-          DATA(lt_tadir) = VALUE zkco_samples_salv_tadir_t( FOR ls_tadir IN gt_tadir
+          DATA(lt_tadir) = VALUE zkco_samples_alv_tadir_t( FOR ls_tadir IN gt_tadir
                                                             WHERE ( pgmid  EQ <ls_tadir_output>-pgmid AND
                                                                     object EQ <ls_tadir_output>-object )
                                                             ( ls_tadir ) ).
@@ -93,7 +92,7 @@ CLASS lcl_handle_events IMPLEMENTATION.
     ENDIF.
   ENDMETHOD.
 
-  METHOD handle_added_function.
+  METHOD handle_toolbar.
     APPEND LINES OF VALUE ttb_button( ( function = gcs_toolbar-expall_name
                                         icon     = gcs_toolbar-expall_icon
                                         quickinfo = gcs_toolbar-expall_tooltip )
@@ -124,7 +123,7 @@ CLASS lcl_handle_events IMPLEMENTATION.
         ASSIGN gt_tadir_output[ e_row_id-index ] TO FIELD-SYMBOL(<ls_tadir_output>).
         IF <ls_tadir_output>-expand(3) EQ icon_expand(3).
           <ls_tadir_output>-expand = lcl_handle_events=>get_icon( iv_type = 'C' ).
-          DATA(lt_tadir) = VALUE zkco_samples_salv_tadir_t( FOR ls_tadir IN gt_tadir
+          DATA(lt_tadir) = VALUE zkco_samples_alv_tadir_t( FOR ls_tadir IN gt_tadir
                                                             WHERE ( pgmid  EQ <ls_tadir_output>-pgmid AND
                                                                     object EQ <ls_tadir_output>-object )
                                                             ( ls_tadir ) ).

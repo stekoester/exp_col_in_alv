@@ -32,9 +32,10 @@ ENDFORM.
 FORM alv_display.
   DATA(lo_alv_grid) = NEW cl_gui_alv_grid( NEW cl_gui_custom_container( 'ALV' ) ).
   DATA(lr_event_handler) = NEW lcl_handle_events( ).
-  SET HANDLER lr_event_handler->handle_added_function FOR lo_alv_grid.
-  SET HANDLER lr_event_handler->handle_link_click FOR lo_alv_grid.
-  SET HANDLER lr_event_handler->handle_user_command FOR lo_alv_grid.
+  SET HANDLER:
+    lr_event_handler->handle_toolbar      FOR lo_alv_grid,
+    lr_event_handler->handle_link_click   FOR lo_alv_grid,
+    lr_event_handler->handle_user_command FOR lo_alv_grid.
   lo_alv_grid->set_table_for_first_display(
     EXPORTING
       i_structure_name              = 'ZKCO_SAMPLES_ALV_TADIR_OUTPUT'
