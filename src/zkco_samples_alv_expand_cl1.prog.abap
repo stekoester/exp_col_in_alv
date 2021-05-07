@@ -24,10 +24,9 @@ CLASS lcl_handle_events DEFINITION.
         IMPORTING
           iv_type        TYPE char1
         RETURNING
-          value(rv_icon) TYPE text40.
+          VALUE(rv_icon) TYPE text40.
 
     METHODS:
-*      handle_added_function FOR EVENT added_function OF cl_salv_events_table
       handle_user_command   FOR EVENT user_command  OF cl_gui_alv_grid
         IMPORTING
           e_ucomm
@@ -95,9 +94,9 @@ CLASS lcl_handle_events IMPLEMENTATION.
         LOOP  AT gt_tadir_output ASSIGNING <ls_tadir_output>
               WHERE expand(3) EQ icon_collapse(3).
           <ls_tadir_output>-expand = lcl_handle_events=>get_icon( iv_type = 'E' ).
-          DELETE gt_tadir_output  FROM sy-tabix + 1
-                                  WHERE pgmid  EQ <ls_tadir_output>-pgmid
-                                    AND object EQ <ls_tadir_output>-object.
+          DELETE gt_tadir_output  WHERE pgmid  EQ <ls_tadir_output>-pgmid
+                                    AND object EQ <ls_tadir_output>-object
+                                    AND expand IS INITIAL.
         ENDLOOP.
         IF sy-subrc EQ 0.
           lv_refresh_alv = abap_true.
@@ -185,9 +184,9 @@ CLASS lcl_handle_events IMPLEMENTATION.
           ENDLOOP.
         ELSE.
           <ls_tadir_output>-expand = lcl_handle_events=>get_icon( iv_type = 'E' ).
-          DELETE gt_tadir_output  FROM sy-tabix + 1
-                                  WHERE pgmid  EQ <ls_tadir_output>-pgmid
-                                    AND object EQ <ls_tadir_output>-object.
+          DELETE gt_tadir_output  WHERE pgmid  EQ <ls_tadir_output>-pgmid
+                                    AND object EQ <ls_tadir_output>-object
+                                    AND expand IS INITIAL.
         ENDIF.
 
         ls_stable-row = abap_true.
