@@ -26,11 +26,13 @@ CLASS lcl_handle_events DEFINITION.
         IMPORTING
           e_ucomm
           sender,
-      handle_toolbar FOR EVENT toolbar       OF cl_gui_alv_grid
+
+      handle_toolbar        FOR EVENT toolbar       OF cl_gui_alv_grid
         IMPORTING
           e_object
           e_interactive
           sender,
+
       handle_link_click     FOR EVENT hotspot_click OF cl_gui_alv_grid
         IMPORTING
           e_row_id
@@ -47,6 +49,21 @@ CLASS lcl_handle_events IMPLEMENTATION.
                            colall_tooltip = 'Collapse all Details'(c01) ).
   ENDMETHOD.
 
+  METHOD get_icon.
+    CALL FUNCTION 'ICON_CREATE'
+      EXPORTING
+        name                  = SWITCH #( iv_type WHEN 'E' THEN icon_expand
+                                                  WHEN 'C' THEN icon_collapse )
+        info                  = SWITCH text40( iv_type WHEN 'E' THEN 'Expand Details'(e02)
+                                                       WHEN 'C' THEN 'Collapse Details'(c02) )
+        add_stdinf            = ' '
+      IMPORTING
+        result                = rv_icon
+      EXCEPTIONS
+        icon_not_found        = 0
+        outputfield_too_short = 0
+        OTHERS                = 0.
+  ENDMETHOD.
 
   METHOD handle_user_command.
     CASE e_ucomm.
@@ -55,14 +72,13 @@ CLASS lcl_handle_events IMPLEMENTATION.
               WHERE expand(3) EQ icon_expand(3).
           DATA(lv_add_subrows_index) = sy-tabix + 1.
           <ls_tadir_output>-expand = lcl_handle_events=>get_icon( iv_type = 'C' ).
-          DATA(lt_tadir) = VALUE zkco_samples_alv_tadir_t( FOR ls_tadir IN gt_tadir
-                                                            WHERE ( pgmid  EQ <ls_tadir_output>-pgmid AND
-                                                                    object EQ <ls_tadir_output>-object )
-                                                            ( ls_tadir ) ).
-          LOOP AT lt_tadir REFERENCE INTO DATA(lr_tadir).
-            INSERT CORRESPONDING #( lr_tadir->* EXCEPT expand ) INTO gt_tadir_output
-                   INDEX lv_add_subrows_index.
-          ENDLOOP.
+          INSERT LINES OF VALUE zkco_samples_alv_tadir_out_t(
+              FOR ls_tadir IN gt_tadir
+              WHERE ( pgmid  EQ <ls_tadir_output>-pgmid AND
+                      object EQ <ls_tadir_output>-object )
+              ( CORRESPONDING #( ls_tadir ) ) )
+            INTO gt_tadir_output
+            INDEX lv_add_subrows_index.
         ENDLOOP.
         IF sy-subrc EQ 0.
           DATA(lv_refresh_alv) = abap_true.
@@ -85,7 +101,7 @@ CLASS lcl_handle_events IMPLEMENTATION.
           is_stable      = VALUE #( row = abap_true col = abap_false )
           i_soft_refresh = abap_true
         EXCEPTIONS
-          finished       = 1                " Display was Ended (by Export)
+          finished       = 1
           OTHERS         = 2 ).
       IF sy-subrc <> 0.
       ENDIF.
@@ -101,37 +117,20 @@ CLASS lcl_handle_events IMPLEMENTATION.
                                         quickinfo = gcs_toolbar-colall_tooltip ) ) TO e_object->mt_toolbar.
   ENDMETHOD.
 
-  METHOD get_icon.
-    CALL FUNCTION 'ICON_CREATE'
-      EXPORTING
-        name                  = SWITCH #( iv_type WHEN 'E' THEN icon_expand
-                                                  WHEN 'C' THEN icon_collapse )
-        info                  = SWITCH text40( iv_type WHEN 'E' THEN 'Expand Details'(e02)
-                                                       WHEN 'C' THEN 'Collapse Details'(c02) )
-        add_stdinf            = ' '
-      IMPORTING
-        result                = rv_icon
-      EXCEPTIONS
-        icon_not_found        = 0
-        outputfield_too_short = 0
-        OTHERS                = 0.
-  ENDMETHOD.
-
   METHOD handle_link_click.
     CASE e_column_id-fieldname.
       WHEN 'EXPAND'.
         ASSIGN gt_tadir_output[ e_row_id-index ] TO FIELD-SYMBOL(<ls_tadir_output>).
         IF <ls_tadir_output>-expand(3) EQ icon_expand(3).
           <ls_tadir_output>-expand = lcl_handle_events=>get_icon( iv_type = 'C' ).
-          DATA(lv_add_subrows_index) = sy-tabix + 1.
-          DATA(lt_tadir) = VALUE zkco_samples_alv_tadir_t( FOR ls_tadir IN gt_tadir
-                                                           WHERE ( pgmid  EQ <ls_tadir_output>-pgmid AND
-                                                                   object EQ <ls_tadir_output>-object )
-                                                           ( ls_tadir ) ).
-          LOOP AT lt_tadir REFERENCE INTO DATA(lr_tadir).
-            INSERT CORRESPONDING #( lr_tadir->* ) INTO gt_tadir_output
-                   INDEX e_row_id-index + sy-tabix.
-          ENDLOOP.
+          DATA(lv_add_subrows_index) = e_row_id-index + 1.
+          INSERT LINES OF VALUE zkco_samples_alv_tadir_out_t(
+              FOR ls_tadir IN gt_tadir
+              WHERE ( pgmid  EQ <ls_tadir_output>-pgmid AND
+                      object EQ <ls_tadir_output>-object )
+              ( CORRESPONDING #( ls_tadir ) ) )
+            INTO gt_tadir_output
+            INDEX lv_add_subrows_index.
         ELSE.
           <ls_tadir_output>-expand = lcl_handle_events=>get_icon( iv_type = 'E' ).
           DELETE gt_tadir_output  WHERE pgmid  EQ <ls_tadir_output>-pgmid
@@ -144,9 +143,8 @@ CLASS lcl_handle_events IMPLEMENTATION.
             is_stable      = VALUE #( row = abap_true col = abap_false )
             i_soft_refresh = abap_true
           EXCEPTIONS
-            finished       = 1                " Display was Ended (by Export)
+            finished       = 1
             OTHERS         = 2 ).
     ENDCASE.
   ENDMETHOD.
-
 ENDCLASS.
