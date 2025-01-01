@@ -72,8 +72,8 @@ CLASS lcl_handle_events IMPLEMENTATION.
   METHOD handle_user_command.
     CASE e_ucomm.
       WHEN gs_toolbar-expall_name.
-        LOOP  AT gt_tadir_output ASSIGNING FIELD-SYMBOL(<ls_tadir_output>)
-              WHERE expand(3) EQ icon_expand(3).
+        LOOP AT gt_tadir_output ASSIGNING FIELD-SYMBOL(<ls_tadir_output>)
+             WHERE expand(3) EQ icon_expand(3).
           DATA(lv_add_subrows_index) = sy-tabix + 1.
           <ls_tadir_output>-expand = lcl_handle_events=>get_icon( 'C' ).
           INSERT LINES OF VALUE zkco_samples_alv_tadir_out_t(
