@@ -20,7 +20,7 @@ FORM data_get.
     ENDIF.
   ENDDO.
   IF gt_tadir_output IS INITIAL.
-    MESSAGE 'No data selected' TYPE 'S' DISPLAY LIKE 'E'.
+    MESSAGE 'No data selected' TYPE 'S' DISPLAY LIKE 'E' ##no_text.
     LEAVE LIST-PROCESSING.
   ENDIF.
 ENDFORM.
