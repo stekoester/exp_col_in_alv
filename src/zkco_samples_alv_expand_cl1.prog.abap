@@ -59,13 +59,13 @@ CLASS lcl_handle_events IMPLEMENTATION.
 
     CASE e_ucomm.
       WHEN gcs_toolbar-expall_name.
-        LOOP  AT gt_tadir_output ASSIGNING <ls_tadir_output>
-              WHERE expand(3) EQ icon_expand(3).
+        LOOP AT gt_tadir_output ASSIGNING <ls_tadir_output>
+             WHERE expand(3) EQ icon_expand(3).
           lv_tabix = sy-tabix.
           <ls_tadir_output>-expand = lcl_handle_events=>get_icon( 'C' ).
           CLEAR: lv_count.
-          LOOP  AT gt_tadir REFERENCE INTO lr_tadir
-                WHERE pgmid  EQ <ls_tadir_output>-pgmid
+          LOOP AT gt_tadir REFERENCE INTO lr_tadir
+               WHERE pgmid  EQ <ls_tadir_output>-pgmid
                   AND object EQ <ls_tadir_output>-object.
             lv_count = lv_count + 1.
             INSERT INITIAL LINE INTO gt_tadir_output INDEX lv_tabix + lv_count ASSIGNING <ls_tadir_output_new>.
@@ -76,8 +76,8 @@ CLASS lcl_handle_events IMPLEMENTATION.
           lv_refresh_alv = abap_true.
         ENDIF.
       WHEN gcs_toolbar-colall_name.
-        LOOP  AT gt_tadir_output ASSIGNING <ls_tadir_output>
-              WHERE expand(3) EQ icon_collapse(3).
+        LOOP AT gt_tadir_output ASSIGNING <ls_tadir_output>
+             WHERE expand(3) EQ icon_collapse(3).
           <ls_tadir_output>-expand = lcl_handle_events=>get_icon( 'E' ).
           DELETE gt_tadir_output  WHERE pgmid  EQ <ls_tadir_output>-pgmid
                                     AND object EQ <ls_tadir_output>-object
@@ -157,8 +157,8 @@ CLASS lcl_handle_events IMPLEMENTATION.
         READ TABLE gt_tadir_output ASSIGNING <ls_tadir_output> INDEX e_row_id-index.
         IF <ls_tadir_output>-expand(3) EQ icon_expand(3).
           <ls_tadir_output>-expand = lcl_handle_events=>get_icon( 'C' ).
-          LOOP  AT gt_tadir REFERENCE INTO lr_tadir
-                WHERE pgmid  EQ <ls_tadir_output>-pgmid
+          LOOP AT gt_tadir REFERENCE INTO lr_tadir
+               WHERE pgmid  EQ <ls_tadir_output>-pgmid
                   AND object EQ <ls_tadir_output>-object.
             lv_count = lv_count + 1.
             INSERT INITIAL LINE INTO gt_tadir_output INDEX e_row_id-index + lv_count ASSIGNING <ls_tadir_output_new>.
