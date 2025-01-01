@@ -1,11 +1,11 @@
 CONSTANTS:
-  BEGIN OF gcs_tadir_objects,
+  BEGIN OF co_tadir_objects,
     doma TYPE trobjtype VALUE 'DOMA',
     dtel TYPE trobjtype VALUE 'DTEL',
     prog TYPE trobjtype VALUE 'PROG',
     ssfo TYPE trobjtype VALUE 'SHLP',
     form TYPE trobjtype VALUE 'TABL',
-  END OF gcs_tadir_objects.
+  END OF co_tadir_objects.
 
 DATA gt_tadir TYPE zkco_samples_alv_tadir_t ##needed.
 DATA gt_tadir_output TYPE zkco_samples_alv_tadir_out_t ##needed.

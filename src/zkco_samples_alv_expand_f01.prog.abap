@@ -1,6 +1,6 @@
 FORM data_get.
   DO.
-    ASSIGN COMPONENT sy-index OF STRUCTURE gcs_tadir_objects TO FIELD-SYMBOL(<lv_object>).
+    ASSIGN COMPONENT sy-index OF STRUCTURE co_tadir_objects TO FIELD-SYMBOL(<lv_object>).
     IF sy-subrc NE 0.
       EXIT.
     ENDIF.
@@ -14,9 +14,10 @@ FORM data_get.
       DATA(ls_tadir) = gt_tadir[ lines( gt_tadir ) ].
       APPEND VALUE #( pgmid     = ls_tadir-pgmid
                       object    = ls_tadir-object
-                      expand    = lcl_handle_events=>get_icon( iv_type = 'E' )
+                      expand    = lcl_handle_events=>get_icon( 'E' )
                       cell_type = VALUE #( ( fieldname = 'EXPAND'
-                                             style     = cl_gui_alv_grid=>mc_style_hotspot ) ) ) TO gt_tadir_output.
+                                             style     = cl_gui_alv_grid=>mc_style_hotspot ) ) )
+             TO gt_tadir_output.
     ENDIF.
   ENDDO.
   IF gt_tadir_output IS INITIAL.
