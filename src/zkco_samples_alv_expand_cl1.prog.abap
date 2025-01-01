@@ -1,8 +1,3 @@
-*----------------------------------------------------------------------*
-*       CLASS lcl_handle_events DEFINITION
-*----------------------------------------------------------------------*
-*
-*----------------------------------------------------------------------*
 CLASS lcl_handle_events DEFINITION.
   PUBLIC SECTION.
     CLASS-DATA:
@@ -17,61 +12,51 @@ CLASS lcl_handle_events DEFINITION.
         colall_position TYPE salv_de_function_pos VALUE if_salv_c_function_position=>right_of_salv_functions,
       END OF gcs_toolbar.
 
-    CLASS-METHODS:
-      class_constructor,
+    CLASS-METHODS class_constructor.
 
-      get_icon
-        IMPORTING
-          iv_type        TYPE char1
-        RETURNING
-          VALUE(rv_icon) TYPE text40.
+    CLASS-METHODS get_icon
+      IMPORTING
+        iv_type        TYPE char1
+      RETURNING
+        value(rv_icon) TYPE text40.
 
-    METHODS:
-      handle_user_command   FOR EVENT user_command  OF cl_gui_alv_grid
+    METHODS handle_user_command FOR EVENT user_command OF cl_gui_alv_grid
         IMPORTING
           e_ucomm
-          sender,
-      handle_added_function FOR EVENT toolbar       OF cl_gui_alv_grid
-        IMPORTING
-          e_object
-          e_interactive
-          sender,
-      handle_link_click     FOR EVENT hotspot_click OF cl_gui_alv_grid
-        IMPORTING
-          e_row_id
-          e_column_id
-          es_row_no
           sender.
+
+    METHODS handle_added_function FOR EVENT toolbar OF cl_gui_alv_grid
+      IMPORTING
+        e_object
+        e_interactive
+        sender.
+
+    METHODS handle_link_click FOR EVENT hotspot_click OF cl_gui_alv_grid
+      IMPORTING
+        e_row_id
+        e_column_id
+        es_row_no
+        sender.
 ENDCLASS.                    "lcl_handle_events DEFINITION
 
-*----------------------------------------------------------------------*
-*       CLASS lcl_handle_events IMPLEMENTATION
-*----------------------------------------------------------------------*
-*
-*----------------------------------------------------------------------*
 CLASS lcl_handle_events IMPLEMENTATION.
-
   METHOD class_constructor.
     gcs_toolbar-expall_tooltip = 'Expand all Details'(e01).
     gcs_toolbar-colall_tooltip = 'Collapse all Details'(c01).
   ENDMETHOD.                    "class_constructor
 
-
   METHOD handle_user_command.
-    DATA:
-      lv_count       TYPE i,
-      lv_tabix       TYPE i,
-      lv_refresh_alv TYPE abap_bool.
+    DATA lv_count TYPE i.
+    DATA lv_tabix TYPE i.
+    DATA lv_refresh_alv TYPE abap_bool.
 
-    DATA:
-      ls_stable TYPE lvc_s_stbl.
+    DATA ls_stable TYPE lvc_s_stbl.
 
-    DATA:
-      lr_tadir TYPE REF TO zkco_samples_alv_tadir.
+    DATA lr_tadir TYPE REF TO zkco_samples_alv_tadir.
 
-    FIELD-SYMBOLS:
-      <ls_tadir_output>     TYPE zkco_samples_alv_tadir_output,
-      <ls_tadir_output_new> TYPE zkco_samples_alv_tadir_output.
+    FIELD-SYMBOLS <ls_tadir_output> TYPE zkco_samples_alv_tadir_output.
+    FIELD-SYMBOLS <ls_tadir_output_new> TYPE zkco_samples_alv_tadir_output.
+
     CASE e_ucomm.
       WHEN gcs_toolbar-expall_name.
         LOOP  AT gt_tadir_output ASSIGNING <ls_tadir_output>
@@ -118,8 +103,8 @@ CLASS lcl_handle_events IMPLEMENTATION.
   ENDMETHOD.                    "handle_user_command
 
   METHOD handle_added_function.
-    DATA:
-      ls_button TYPE stb_button.
+    DATA ls_button TYPE stb_button.
+
     ls_button-function  = gcs_toolbar-expall_name.
     ls_button-icon      = gcs_toolbar-expall_icon.
     ls_button-quickinfo = gcs_toolbar-expall_tooltip.
@@ -131,9 +116,9 @@ CLASS lcl_handle_events IMPLEMENTATION.
   ENDMETHOD.                    "handle_added_function
 
   METHOD get_icon.
-    DATA:
-      lv_name TYPE iconname,
-      lv_info TYPE text40.
+    DATA lv_name TYPE iconname.
+    DATA lv_info TYPE text40.
+
     CASE iv_type.
       WHEN 'E'.
         lv_name = icon_expand.
@@ -156,20 +141,17 @@ CLASS lcl_handle_events IMPLEMENTATION.
   ENDMETHOD.                    "get_icon
 
   METHOD handle_link_click.
-    DATA:
-      lv_count       TYPE i,
-      lv_tabix       TYPE i,
-      lv_refresh_alv TYPE abap_bool.
+    DATA lv_count TYPE i.
+    DATA lv_tabix TYPE i.
+    DATA lv_refresh_alv TYPE abap_bool.
 
-    DATA:
-      ls_stable TYPE lvc_s_stbl.
+    DATA ls_stable TYPE lvc_s_stbl.
 
-    DATA:
-      lr_tadir TYPE REF TO zkco_samples_alv_tadir.
+    DATA lr_tadir TYPE REF TO zkco_samples_alv_tadir.
 
-    FIELD-SYMBOLS:
-      <ls_tadir_output>     TYPE zkco_samples_alv_tadir_output,
-      <ls_tadir_output_new> TYPE zkco_samples_alv_tadir_output.
+    FIELD-SYMBOLS <ls_tadir_output> TYPE zkco_samples_alv_tadir_output.
+    FIELD-SYMBOLS <ls_tadir_output_new> TYPE zkco_samples_alv_tadir_output.
+
     CASE e_column_id-fieldname.
       WHEN 'EXPAND'.
         READ TABLE gt_tadir_output ASSIGNING <ls_tadir_output> INDEX e_row_id-index.
@@ -202,5 +184,4 @@ CLASS lcl_handle_events IMPLEMENTATION.
         ENDIF.
     ENDCASE.
   ENDMETHOD.                    "handle_link_click
-
 ENDCLASS.                    "lcl_handle_events IMPLEMENTATION

@@ -7,6 +7,5 @@ CONSTANTS:
     form TYPE trobjtype VALUE 'TABL',
   END OF gcs_tadir_objects.
 
-DATA:
-  gt_tadir        TYPE zkco_samples_alv_tadir_t,           "#EC NEEDED
-  gt_tadir_output TYPE zkco_samples_alv_tadir_out_t.       "#EC NEEDED
+DATA gt_tadir TYPE zkco_samples_alv_tadir_t.                "#EC NEEDED
+DATA gt_tadir_output TYPE zkco_samples_alv_tadir_out_t.     "#EC NEEDED
