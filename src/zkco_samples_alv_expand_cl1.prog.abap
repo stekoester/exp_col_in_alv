@@ -18,12 +18,12 @@ CLASS lcl_handle_events DEFINITION.
       IMPORTING
         iv_type        TYPE char1
       RETURNING
-        value(rv_icon) TYPE text40.
+        VALUE(rv_icon) TYPE text40.
 
     METHODS handle_user_command FOR EVENT user_command OF cl_gui_alv_grid
-        IMPORTING
-          e_ucomm
-          sender.
+      IMPORTING
+        e_ucomm
+        sender.
 
     METHODS handle_added_function FOR EVENT toolbar OF cl_gui_alv_grid
       IMPORTING
