@@ -62,7 +62,7 @@ CLASS lcl_handle_events IMPLEMENTATION.
         LOOP  AT gt_tadir_output ASSIGNING <ls_tadir_output>
               WHERE expand(3) EQ icon_expand(3).
           lv_tabix = sy-tabix.
-          <ls_tadir_output>-expand = lcl_handle_events=>get_icon( iv_type = 'C' ).
+          <ls_tadir_output>-expand = lcl_handle_events=>get_icon( 'C' ).
           CLEAR: lv_count.
           LOOP  AT gt_tadir REFERENCE INTO lr_tadir
                 WHERE pgmid  EQ <ls_tadir_output>-pgmid
@@ -78,7 +78,7 @@ CLASS lcl_handle_events IMPLEMENTATION.
       WHEN gcs_toolbar-colall_name.
         LOOP  AT gt_tadir_output ASSIGNING <ls_tadir_output>
               WHERE expand(3) EQ icon_collapse(3).
-          <ls_tadir_output>-expand = lcl_handle_events=>get_icon( iv_type = 'E' ).
+          <ls_tadir_output>-expand = lcl_handle_events=>get_icon( 'E' ).
           DELETE gt_tadir_output  WHERE pgmid  EQ <ls_tadir_output>-pgmid
                                     AND object EQ <ls_tadir_output>-object
                                     AND expand IS INITIAL.
@@ -105,12 +105,12 @@ CLASS lcl_handle_events IMPLEMENTATION.
   METHOD handle_added_function.
     DATA ls_button TYPE stb_button.
 
-    ls_button-function  = gcs_toolbar-expall_name.
-    ls_button-icon      = gcs_toolbar-expall_icon.
+    ls_button-function = gcs_toolbar-expall_name.
+    ls_button-icon = gcs_toolbar-expall_icon.
     ls_button-quickinfo = gcs_toolbar-expall_tooltip.
     APPEND ls_button TO e_object->mt_toolbar.
-    ls_button-function  = gcs_toolbar-colall_name.
-    ls_button-icon      = gcs_toolbar-colall_icon.
+    ls_button-function = gcs_toolbar-colall_name.
+    ls_button-icon = gcs_toolbar-colall_icon.
     ls_button-quickinfo = gcs_toolbar-colall_tooltip.
     APPEND ls_button TO e_object->mt_toolbar.
   ENDMETHOD.                    "handle_added_function
@@ -156,7 +156,7 @@ CLASS lcl_handle_events IMPLEMENTATION.
       WHEN 'EXPAND'.
         READ TABLE gt_tadir_output ASSIGNING <ls_tadir_output> INDEX e_row_id-index.
         IF <ls_tadir_output>-expand(3) EQ icon_expand(3).
-          <ls_tadir_output>-expand = lcl_handle_events=>get_icon( iv_type = 'C' ).
+          <ls_tadir_output>-expand = lcl_handle_events=>get_icon( 'C' ).
           LOOP  AT gt_tadir REFERENCE INTO lr_tadir
                 WHERE pgmid  EQ <ls_tadir_output>-pgmid
                   AND object EQ <ls_tadir_output>-object.
@@ -165,7 +165,7 @@ CLASS lcl_handle_events IMPLEMENTATION.
             MOVE-CORRESPONDING lr_tadir->* TO <ls_tadir_output_new>.
           ENDLOOP.
         ELSE.
-          <ls_tadir_output>-expand = lcl_handle_events=>get_icon( iv_type = 'E' ).
+          <ls_tadir_output>-expand = lcl_handle_events=>get_icon( 'E' ).
           DELETE gt_tadir_output  WHERE pgmid  EQ <ls_tadir_output>-pgmid
                                     AND object EQ <ls_tadir_output>-object
                                     AND expand IS INITIAL.

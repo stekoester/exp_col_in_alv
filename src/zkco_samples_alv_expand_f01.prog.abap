@@ -9,7 +9,7 @@ FORM data_get.
   ls_cell_type-style     = cl_gui_alv_grid=>mc_style_hotspot.
   APPEND ls_cell_type TO ls_tadir_output-cell_type.
   DO.
-    ASSIGN COMPONENT sy-index OF STRUCTURE gcs_tadir_objects TO <lv_object>.
+    ASSIGN COMPONENT sy-index OF STRUCTURE co_tadir_objects TO <lv_object>.
     IF sy-subrc NE 0.
       EXIT.
     ENDIF.
