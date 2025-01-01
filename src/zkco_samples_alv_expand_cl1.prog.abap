@@ -40,20 +40,18 @@ CLASS lcl_handle_events DEFINITION.
 ENDCLASS.
 
 CLASS lcl_handle_events IMPLEMENTATION.
-
   METHOD class_constructor.
     gs_toolbar-expall_tooltip = 'Expand all Details'(e01).
     gs_toolbar-colall_tooltip = 'Collapse all Details'(c01).
   ENDMETHOD.
 
-
   METHOD handle_user_command.
     CASE e_ucomm.
       WHEN gs_toolbar-expall_name.
-        LOOP  AT gt_tadir_output ASSIGNING FIELD-SYMBOL(<ls_tadir_output>)
-              WHERE expand(3) EQ icon_expand(3).
+        LOOP AT gt_tadir_output ASSIGNING FIELD-SYMBOL(<ls_tadir_output>)
+             WHERE expand(3) EQ icon_expand(3).
           DATA(lv_add_subrows_index) = sy-tabix + 1.
-          <ls_tadir_output>-expand = lcl_handle_events=>get_icon( iv_type = 'C' ).
+          <ls_tadir_output>-expand = lcl_handle_events=>get_icon( 'C' ).
           INSERT LINES OF VALUE zkco_samples_alv_tadir_out_t(
               FOR ls_tadir IN gt_tadir
               WHERE ( pgmid  EQ <ls_tadir_output>-pgmid AND
@@ -68,7 +66,7 @@ CLASS lcl_handle_events IMPLEMENTATION.
       WHEN gs_toolbar-colall_name.
         LOOP  AT gt_tadir_output ASSIGNING <ls_tadir_output>
               WHERE expand(3) EQ icon_collapse(3).
-          <ls_tadir_output>-expand = lcl_handle_events=>get_icon( iv_type = 'E' ).
+          <ls_tadir_output>-expand = lcl_handle_events=>get_icon( 'E' ).
           DELETE gt_tadir_output  WHERE pgmid  EQ <ls_tadir_output>-pgmid
                                     AND object EQ <ls_tadir_output>-object
                                     AND expand IS INITIAL.
@@ -80,7 +78,8 @@ CLASS lcl_handle_events IMPLEMENTATION.
     IF lv_refresh_alv EQ abap_true.
       sender->refresh_table_display(
         EXPORTING
-          is_stable      = VALUE #( row = abap_true col = abap_false )
+          is_stable      = VALUE #( row = abap_true
+                                    col = abap_false )
           i_soft_refresh = abap_true
         EXCEPTIONS
           finished       = 1                " Display was Ended (by Export)
@@ -91,21 +90,28 @@ CLASS lcl_handle_events IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD handle_added_function.
-    APPEND LINES OF VALUE ttb_button( ( function = gs_toolbar-expall_name
-                                        icon     = gs_toolbar-expall_icon
+    APPEND LINES OF VALUE ttb_button( ( function  = gs_toolbar-expall_name
+                                        icon      = gs_toolbar-expall_icon
                                         quickinfo = gs_toolbar-expall_tooltip )
-                                      ( function = gs_toolbar-colall_name
-                                        icon     = gs_toolbar-colall_icon
-                                        quickinfo = gs_toolbar-colall_tooltip ) ) TO e_object->mt_toolbar.
+                                      ( function  = gs_toolbar-colall_name
+                                        icon      = gs_toolbar-colall_icon
+                                        quickinfo = gs_toolbar-colall_tooltip ) )
+           TO e_object->mt_toolbar.
   ENDMETHOD.
 
   METHOD get_icon.
     CALL FUNCTION 'ICON_CREATE'
       EXPORTING
-        name                  = SWITCH #( iv_type WHEN 'E' THEN icon_expand
-                                                  WHEN 'C' THEN icon_collapse )
-        info                  = SWITCH text40( iv_type WHEN 'E' THEN 'Expand Details'(e02)
-                                                       WHEN 'C' THEN 'Collapse Details'(c02) )
+        name                  = SWITCH #( iv_type
+                                          WHEN 'E'
+                                          THEN icon_expand
+                                          WHEN 'C'
+                                          THEN icon_collapse )
+        info                  = SWITCH text40( iv_type
+                                               WHEN 'E'
+                                               THEN 'Expand Details'(e02)
+                                               WHEN 'C'
+                                               THEN 'Collapse Details'(c02) )
         add_stdinf            = ' '
       IMPORTING
         result                = rv_icon
@@ -120,7 +126,7 @@ CLASS lcl_handle_events IMPLEMENTATION.
       WHEN 'EXPAND'.
         ASSIGN gt_tadir_output[ e_row_id-index ] TO FIELD-SYMBOL(<ls_tadir_output>).
         IF <ls_tadir_output>-expand(3) EQ icon_expand(3).
-          <ls_tadir_output>-expand = lcl_handle_events=>get_icon( iv_type = 'C' ).
+          <ls_tadir_output>-expand = lcl_handle_events=>get_icon( 'C' ).
           DATA(lv_add_subrows_index) = e_row_id-index + 1.
           INSERT LINES OF VALUE zkco_samples_alv_tadir_out_t(
               FOR ls_tadir IN gt_tadir
@@ -130,7 +136,7 @@ CLASS lcl_handle_events IMPLEMENTATION.
             INTO gt_tadir_output
             INDEX lv_add_subrows_index.
         ELSE.
-          <ls_tadir_output>-expand = lcl_handle_events=>get_icon( iv_type = 'E' ).
+          <ls_tadir_output>-expand = lcl_handle_events=>get_icon( 'E' ).
           DELETE gt_tadir_output  WHERE pgmid  EQ <ls_tadir_output>-pgmid
                                     AND object EQ <ls_tadir_output>-object
                                     AND expand IS INITIAL.
@@ -138,7 +144,8 @@ CLASS lcl_handle_events IMPLEMENTATION.
 
         sender->refresh_table_display(
           EXPORTING
-            is_stable      = VALUE #( row = abap_true col = abap_false )
+            is_stable      = VALUE #( row = abap_true
+                                      col = abap_false )
             i_soft_refresh = abap_true
           EXCEPTIONS
             finished       = 1                " Display was Ended (by Export)
