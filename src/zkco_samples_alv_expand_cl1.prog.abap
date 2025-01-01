@@ -1,7 +1,7 @@
 CLASS lcl_handle_events DEFINITION.
   PUBLIC SECTION.
     CLASS-DATA:
-      BEGIN OF gcs_toolbar,
+      BEGIN OF gs_toolbar,
         expall_name     TYPE salv_de_function VALUE 'EXPALL',
         expall_icon     TYPE iconname VALUE icon_expand_all,
         colall_name     TYPE salv_de_function VALUE 'COLALL',
@@ -10,46 +10,46 @@ CLASS lcl_handle_events DEFINITION.
         colall_tooltip  TYPE string,
         expall_position TYPE salv_de_function_pos VALUE if_salv_c_function_position=>right_of_salv_functions,
         colall_position TYPE salv_de_function_pos VALUE if_salv_c_function_position=>right_of_salv_functions,
-      END OF gcs_toolbar.
+      END OF gs_toolbar.
 
-    CLASS-METHODS:
-      class_constructor,
+    CLASS-METHODS class_constructor.
 
-      get_icon
-        IMPORTING
-          iv_type        TYPE char1
-        RETURNING
-          VALUE(rv_icon) TYPE text40.
+    CLASS-METHODS get_icon
+      IMPORTING
+        iv_type        TYPE char1
+      RETURNING
+        VALUE(rv_icon) TYPE text40.
 
-    METHODS:
-      handle_user_command   FOR EVENT user_command  OF cl_gui_alv_grid
-        IMPORTING
-          e_ucomm
-          sender,
-      handle_added_function FOR EVENT toolbar       OF cl_gui_alv_grid
-        IMPORTING
-          e_object
-          e_interactive
-          sender,
-      handle_link_click     FOR EVENT hotspot_click OF cl_gui_alv_grid
-        IMPORTING
-          e_row_id
-          e_column_id
-          es_row_no
-          sender.
+    METHODS handle_user_command FOR EVENT user_command OF cl_gui_alv_grid
+      IMPORTING
+        e_ucomm
+        sender.
+
+    METHODS handle_added_function FOR EVENT toolbar OF cl_gui_alv_grid
+      IMPORTING
+        e_object
+        e_interactive
+        sender.
+
+    METHODS handle_link_click FOR EVENT hotspot_click OF cl_gui_alv_grid
+      IMPORTING
+        e_row_id
+        e_column_id
+        es_row_no
+        sender.
 ENDCLASS.
 
 CLASS lcl_handle_events IMPLEMENTATION.
 
   METHOD class_constructor.
-    gcs_toolbar-expall_tooltip = 'Expand all Details'(e01).
-    gcs_toolbar-colall_tooltip = 'Collapse all Details'(c01).
+    gs_toolbar-expall_tooltip = 'Expand all Details'(e01).
+    gs_toolbar-colall_tooltip = 'Collapse all Details'(c01).
   ENDMETHOD.
 
 
   METHOD handle_user_command.
     CASE e_ucomm.
-      WHEN gcs_toolbar-expall_name.
+      WHEN gs_toolbar-expall_name.
         LOOP  AT gt_tadir_output ASSIGNING FIELD-SYMBOL(<ls_tadir_output>)
               WHERE expand(3) EQ icon_expand(3).
           DATA(lv_add_subrows_index) = sy-tabix + 1.
@@ -65,7 +65,7 @@ CLASS lcl_handle_events IMPLEMENTATION.
         IF sy-subrc EQ 0.
           DATA(lv_refresh_alv) = abap_true.
         ENDIF.
-      WHEN gcs_toolbar-colall_name.
+      WHEN gs_toolbar-colall_name.
         LOOP  AT gt_tadir_output ASSIGNING <ls_tadir_output>
               WHERE expand(3) EQ icon_collapse(3).
           <ls_tadir_output>-expand = lcl_handle_events=>get_icon( iv_type = 'E' ).
@@ -91,12 +91,12 @@ CLASS lcl_handle_events IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD handle_added_function.
-    APPEND LINES OF VALUE ttb_button( ( function = gcs_toolbar-expall_name
-                                        icon     = gcs_toolbar-expall_icon
-                                        quickinfo = gcs_toolbar-expall_tooltip )
-                                      ( function = gcs_toolbar-colall_name
-                                        icon     = gcs_toolbar-colall_icon
-                                        quickinfo = gcs_toolbar-colall_tooltip ) ) TO e_object->mt_toolbar.
+    APPEND LINES OF VALUE ttb_button( ( function = gs_toolbar-expall_name
+                                        icon     = gs_toolbar-expall_icon
+                                        quickinfo = gs_toolbar-expall_tooltip )
+                                      ( function = gs_toolbar-colall_name
+                                        icon     = gs_toolbar-colall_icon
+                                        quickinfo = gs_toolbar-colall_tooltip ) ) TO e_object->mt_toolbar.
   ENDMETHOD.
 
   METHOD get_icon.
